@@ -12,7 +12,7 @@ public class playerWeapon : MonoBehaviour
 
     public int activeWeaponIndex { get; private set;  }
 
-    private weaponController[] weaponSlots = new weaponController[5];
+    private weaponController[] weaponSlots = new weaponController[2];
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +22,7 @@ public class playerWeapon : MonoBehaviour
         {
             AddWeapon(startingWeapon);
         }
+        SwitchWeapon();
     }
 
     // Update is called once per frame
@@ -29,17 +30,26 @@ public class playerWeapon : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SwitchWeapon(0);
+            SwitchWeapon();
         }
     }
 
-    private void SwitchWeapon(int p_weaponIndex)
+    private void SwitchWeapon()
     {
-        if (p_weaponIndex != activeWeaponIndex && p_weaponIndex >= 0)
+        int tempIndex = (activeWeaponIndex + 1) % weaponSlots.Length;
+
+        if (weaponSlots[tempIndex] == null)
+            return;
+
+        foreach(weaponController weapon in weaponSlots)
         {
-            weaponSlots[p_weaponIndex].gameObject.SetActive(true);
-            activeWeaponIndex = p_weaponIndex;
+            if (weapon != null) weapon.gameObject.SetActive(false);
         }
+
+        weaponSlots[tempIndex].gameObject.SetActive(true);
+        activeWeaponIndex = tempIndex;
+
+        eventManager.current.newGunEvent.Invoke();
     }
 
     private void AddWeapon(weaponController p_weaponPrefab)
@@ -51,6 +61,7 @@ public class playerWeapon : MonoBehaviour
             if(weaponSlots[i] == null)
             {
                 weaponController weaponClone = Instantiate(p_weaponPrefab, weaponParentSocket);
+                weaponClone.owner = gameObject;
                 weaponClone.gameObject.SetActive(false);
 
                 weaponSlots[i] = weaponClone;

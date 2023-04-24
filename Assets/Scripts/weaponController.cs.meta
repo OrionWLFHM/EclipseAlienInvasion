@@ -3,7 +3,10 @@ guid: 8bc97ea8ea2175346bffc5afc61cfa68
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - weaponMuzzle: {instanceID: 0}
+  - bulletHolePrefab: {fileID: 7858987665557051508, guid: c0a643509ce51b04d88ea524772aeae6, type: 3}
+  - flashEffect: {fileID: 1306960835333167724, guid: e1516a5d33dc36a4494682727dad9e16, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
